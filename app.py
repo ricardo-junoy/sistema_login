@@ -1,4 +1,4 @@
-from bottle import Bottle, route, run, request, template, static_file, get
+from bottle import Bottle, route, run, request, template, static_file, get, os
 
 #app = Bottle() Se fosse usar as rotas como um obj
 
@@ -39,4 +39,7 @@ def	acao_login():
 	return template('verificacao_login', sucesso = check_login(username,password))
 
 if __name__ == '__main__':
-	run(host='localhost', port=8080, debug=True, reloader=True)
+	if os.environ.get('APP_LOCATION') == 'heroku':
+		run(host='0.0.0.0', port=int(os.environ.get('PORT',5000)))
+	else:
+		run(host='localhost', port=8080, debug=True, reloader=True)
